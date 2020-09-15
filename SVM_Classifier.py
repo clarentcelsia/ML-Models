@@ -38,7 +38,8 @@ def Datasets():
        #print(diabetes) : to see the table
        
     # DEPENDENT VARs
-    X = diabetes.iloc[:, [1,2]].values # entire rows and take first 8 columns 
+    # X = diabetes.iloc[:, :8].values # entire rows and take first 8 columns 
+    X = diabetes.iloc[:, [1,2]].values 
     # INDEPENDENT VAR : Outcome
     y = diabetes['Outcome'].values
     
