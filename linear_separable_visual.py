@@ -80,7 +80,7 @@ def params_c():
         axis.scatter(model.support_vectors_[:, 0],
                 model.support_vectors_[:, 1],
                 s=300, lw=1, facecolors='none');
-        axi.set_title('C = {0:.1f}'.format(C), size=14)
+        axis.set_title('C = {0:.1f}'.format(C), size=14)
 
                 
     
