@@ -46,7 +46,7 @@ def svm_decision_function(model, ax=None, plot_support=True):
     if plot_support:
         ax.scatter(model.support_vectors_[:, 0],
                    model.support_vectors_[:, 1],
-                   s=300, linewidth=1, facecolors='g');
+                   s=300, linewidth=1, edgecolors = 'k', facecolors='g');
     ax.set_xlim(xlim)
     ax.set_ylim(ylim)
 
