@@ -123,7 +123,7 @@ def load_glcm_csv(d, angle):
     
     return X, y
     
-def model(models, d, angle, C=None, kernel=None, gamma=None, visualize=False):
+def SVM(d, angle, C=None, kernel=None, gamma=None, visualize=False):
     
     X, y = load_glcm_csv(d, angle)
     # Splitting the dataset into training and testing set
@@ -134,7 +134,7 @@ def model(models, d, angle, C=None, kernel=None, gamma=None, visualize=False):
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
     
-    if (models == 'svm' and kernel == None and C==None and gamma==None):
+    if (kernel == None and C==None and gamma==None):
         kernel = 'linear'
         C=1
         gamma='scale'
@@ -142,40 +142,39 @@ def model(models, d, angle, C=None, kernel=None, gamma=None, visualize=False):
     # Build model
     svm = SVC(C=C, kernel=kernel, gamma=gamma).fit(X_train, y_train)
       
-    if models == 'svm':
-        #Accuracy of svm on testing and training set
-        test_accuracy = svm.score(X_test, y_test)
-        train_accuracy = svm.score(X_train, y_train)
-        print('SVM Accuracy (training): ', train_accuracy)
-        print('SVM Accuracy (testing): ', test_accuracy)
+    #Accuracy of svm on testing and training set
+    test_accuracy = svm.score(X_test, y_test)
+    train_accuracy = svm.score(X_train, y_train)
+    print('SVM Accuracy (training): ', train_accuracy)
+    print('SVM Accuracy (testing): ', test_accuracy)
         
-        # predict 
-        y_pred = svm.predict(X_test)
-        print('SVM predict: \n', y_pred, "\n")
+    # predict 
+    y_pred = svm.predict(X_test)
+    print('SVM predict: \n', y_pred, "\n")
         
-        # prediction accuracy
-          # system predict (features)x_test based on the training set
-          # and detect upon y_test(y_actual)
-        pred_accuracy = accuracy_score(y_test, y_pred)
-        print(' Accuracy of SVM Prediction: {:.3f}'.format(pred_accuracy))
+    # prediction accuracy
+      # system predict (features)x_test based on the training set
+      # and detect upon y_test(y_actual)
+    pred_accuracy = accuracy_score(y_test, y_pred)
+    print(' Accuracy of SVM Prediction: {:.3f}'.format(pred_accuracy))
         
-        # through confusion matrix
-          # accuracy, precision, recall, f-score
-        confusionmatrix = confusion_matrix(y_test, y_pred)
-        classificationreport = classification_report(y_test, y_pred)
-        print(' Accuracy of SVM Prediction using ConfusionMTX:\n', confusionmatrix, "\n")
-        print(classificationreport)
+    # through confusion matrix
+      # accuracy, precision, recall, f-score
+    confusionmatrix = confusion_matrix(y_test, y_pred)
+    classificationreport = classification_report(y_test, y_pred)
+    print(' Accuracy of SVM Prediction using ConfusionMTX:\n', confusionmatrix, "\n")
+    print(classificationreport)
         
         
-        # by using crossval to evaluate the accuracy of training and testing set
-          # estimator : svm.fit(X_train, y_train)
-          # upon on the training set itself and testing set 
-        train_scores = cross_val_score(svm, X_train, y_train, scoring='accuracy', cv=5)
-        test_scores = cross_val_score(svm, X_test, y_test, scoring='accuracy', cv=5)
-        print("Accuracy of training set by using cross val : ",train_scores)
-        print("Accuracy of testing set by using cross val : ",test_scores)
-        print("Mean of train scores: ", train_scores.mean())
-        print("Mean of test scores: ", test_scores.mean())
+    # by using crossval to evaluate the accuracy of training and testing set
+    # estimator : svm.fit(X_train, y_train)
+    # upon on the training set itself and testing set 
+    train_scores = cross_val_score(svm, X_train, y_train, scoring='accuracy', cv=5)
+    test_scores = cross_val_score(svm, X_test, y_test, scoring='accuracy', cv=5)
+    print("Accuracy of training set by using cross val : ",train_scores)
+    print("Accuracy of testing set by using cross val : ",test_scores)
+    print("Mean of train scores: ", train_scores.mean())
+    print("Mean of test scores: ", test_scores.mean())
   
         
     if visualize:
@@ -192,7 +191,7 @@ def model(models, d, angle, C=None, kernel=None, gamma=None, visualize=False):
         X_train = scaler.fit_transform(X_train)
         X_test = scaler.transform(X_test)
         
-        models.fit(X_train, y_train)
+        svm.fit(X_train, y_train)
         
         # Visualizing the training set
           # Create 2D axis
@@ -215,7 +214,7 @@ def model(models, d, angle, C=None, kernel=None, gamma=None, visualize=False):
         for i, j in enumerate(np.unique(y_train)):
             plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1], s=20, c = ListedColormap(('red', 'green', 'blue', 'yellow', 'gray'))(i), marker='*', label = j)
         
-        plt.title(" %s-GLCM[%s][%s]" % (models, d, angle))
+        plt.title("SVM-GLCM[%s][%s]" % (d, angle))
         plt.xlabel('X1')
         plt.ylabel('X2')
         plt.legend()
@@ -237,5 +236,5 @@ def model(models, d, angle, C=None, kernel=None, gamma=None, visualize=False):
 if __name__=="__main__":
     
     #GLCM(path, distance=1, angle=0)
-    model('svm', d=1, angle=0, C=0.1, kernel='linear', gamma=10, visualize=True)
+    SVM(d=1, angle=0, C=0.1, kernel='linear', gamma=10, visualize=True)
     
