@@ -123,7 +123,7 @@ def load_glcm_csv(d, angle):
     
     return X, y
     
-def model(models, d, angle, C=None, kernel=None, visualize=False):
+def model(models, d, angle, C=None, kernel=None, gamma=None, visualize=False):
     
     X, y = load_glcm_csv(d, angle)
     # Splitting the dataset into training and testing set
@@ -134,12 +134,13 @@ def model(models, d, angle, C=None, kernel=None, visualize=False):
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
     
-    if (models == 'svm' and kernel == None and C==None):
+    if (models == 'svm' and kernel == None and C==None and gamma==None):
         kernel = 'linear'
         C=1
+        gamma='scale'
       
     # Build model
-    svm = SVC(C=C, kernel=kernel).fit(X_train, y_train)
+    svm = SVC(C=C, kernel=kernel, gamma=gamma).fit(X_train, y_train)
       
     if models == 'svm':
         #Accuracy of svm on testing and training set
@@ -236,5 +237,5 @@ def model(models, d, angle, C=None, kernel=None, visualize=False):
 if __name__=="__main__":
     
     #GLCM(path, distance=1, angle=0)
-    model('svm', d=1, angle=0, C=0.1, kernel='linear', visualize=True)
+    model('svm', d=1, angle=0, C=0.1, kernel='linear', gamma=10, visualize=True)
     
