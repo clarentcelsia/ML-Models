@@ -50,7 +50,7 @@ def GET_HOG(img_dir, write_txt, dim=(64,128),
             bins=9, 
             pixels_per_cell=(8,8),
             cells_per_block=(2,2),
-            norm='l2'
+            norm='L2'
             ):
     
     """
@@ -91,7 +91,7 @@ def HOG_feature(imgs,
                 bins=9, 
                 pixels_per_cell=(8,8),
                 cells_per_block=(2,2),
-                norm='l2'
+                norm='L2'
                 ):
     
     """
@@ -296,7 +296,7 @@ if __name__ == "__main__":
             bins=9, 
             pixels_per_cell=(8,8),
             cells_per_block=(2,2),
-            norm='l2')
+            norm='L2')
     
     """
     
