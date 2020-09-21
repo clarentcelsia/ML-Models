@@ -51,6 +51,35 @@ def svm_decision_function(model, ax=None, plot_support=True):
     ax.set_ylim(ylim)
 
 
+def params_gamma():
+    X, y = make_blobs(n_samples=50, n_features= 2, centers=2, random_state=0, cluster_std=0.7)
+
+    fig, ax = plt.subplots(1, 3, figsize=(16, 6))
+    fig.subplots_adjust(left=0.0625, right=0.95, wspace=0.1)
+    
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20)
+    
+    scaler = StandardScaler()
+    X_train = scaler.fit_transform(X_train)
+    X_test = scaler.transform(X_test)
+    
+    X_set, y_set = X_train, y_train
+    X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 1, stop = X_set[:, 0].max() + 1, step = 0.01),\
+                         np.arange(start = X_set[:, 1].min() - 1, stop = X_set[:, 1].max() + 1, step = 0.01))
+    plt.xlim(X1.min(), X1.max())
+    plt.ylim(X2.min(), X2.max())
+
+    for axis, G in zip(ax, [1, 100, 0.1]):
+        print(G)
+        model = SVC(kernel='rbf', gamma=G).fit(X_train, y_train)
+        
+        axis.scatter(X_set[:, 0], X_set[:, 1], c=y_set, cmap='Set1')
+        axis.contourf(X1, X2, model.predict(np.array([X1.ravel(), X2.ravel()]).T).reshape(X1.shape), alpha = 0.55, cmap = ListedColormap(('red', 'green')))
+        svm_decision_function(model, axis, plot_support=True)  
+        # Plot training
+        axis.set_title('gamma = %s' %(G), size=14)
+       
+
 def params_c():
     
     # make_blobs
@@ -179,6 +208,7 @@ def plane_visual():
        
     
 if __name__ == "__main__":
+    params_gamma()
     params_c()
     line_visual()
     plane_visual()
