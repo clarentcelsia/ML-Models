@@ -86,3 +86,68 @@ def SVM(C=1, kernel='linear', gamma='scale', distance=1, angle=0, visualize=Fals
         
         visualized(folderpath)
         
+def visualized(path):
+        orientations = 9
+        pixels_per_cell = (8, 8)
+        cells_per_block = (2, 2)
+        label = 0
+    
+        for folder in os.listdir(path):
+            label = label + 1
+            file_path = "".join((path,"/",folder)) #'D:\\ClarentiCelsia\\Personal\\SKRIPSI\\Proposal\\Resize_Leaf/leafA'
+        
+            for file in os.listdir(file_path):
+                image_path = "".join((file_path, "/", file)) #'D:\\ClarentiCelsia\\Personal\\SKRIPSI\\Proposal\\Resize_Leaf/leafA/leaf001.jpg'
+
+                # Read Image
+                img = cv2.imread(image_path) # open the file
+           
+                #resize_img = resize(img, (128,64))
+                grays = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                # Resize Img
+                dim = (64, 128)
+                resized = cv2.resize(grays, dim, interpolation = cv2.INTER_AREA)
+            
+                j=[]
+                for i,j in enumerate(np.unique(label)):
+                    #(0,1),(0,1)..(0,2)
+                    j=j
+    
+       
+            for ii, jj in enumerate(np.unique(j)):
+                #1,2,3,4,5
+                print("jj: ", jj)  
+                fd, hog_img = hog(resized, orientations, pixels_per_cell, cells_per_block, block_norm='L2' ,feature_vector=True, visualize=True)# fd= feature descriptor
+       
+                fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8), sharex=True, sharey=True) 
+                ax1.imshow(resized, cmap=plt.cm.gray) 
+                ax1.set_title('Input image') 
+
+                # Rescale histogram for better display 
+                hog_image_rescaled = exposure.rescale_intensity(hog_img, in_range=(0, 10)) 
+
+                ax2.imshow(hog_image_rescaled, cmap=plt.cm.gray) 
+                ax2.set_title('Histogram of Oriented Gradients')
+            
+                plt.show()
+   
+        print("Extract successfully!")
+            
+
+
+if __name__ == "__main__":
+    
+   
+    """
+    GET_HOG_GLCM(img_dir = folderpath, 
+            dim=(64,128),
+            bins=9, 
+            pixels_per_cell=(8,8),
+            cells_per_block=(2,2),
+            norm='L2',
+            distance=1,
+            angle=0
+            )
+    """
+    #SVM(C=1, kernel='linear', gamma=10, distance=1, angle=0, visualize=False)
+    Naive(distance=1, angle=135)
