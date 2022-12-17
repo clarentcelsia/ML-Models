@@ -1,6 +1,6 @@
 # Classify the images using some methods
 
-Thanks for the dataset we're using here is from https://www.kaggle.com/saurabh00007/diabetescsv
+Thanks for the dataset we use here is from https://www.kaggle.com/saurabh00007/diabetescsv
 
 raw_to_csv.py is to write the raw data into csv
 
